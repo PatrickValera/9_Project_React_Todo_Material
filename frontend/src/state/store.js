@@ -4,23 +4,24 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 
 
 
-const todoListReducer = (state={todos:[]},action)=>{
+const todoListReducer = (state={},action)=>{
     switch(action.type){
         case "ADD_TODO":{
             return {
-                todos:[...state.todos,action.payload]
+                todos:[...state.todos,action.payload],
+                idCounter:state.idCounter+1
             }
         }
         case "DELETE_TODO":{
             return {
-                todos:state.todos.filter(todo=>todo.id!==action.payload)
+                ...state,todos:state.todos.filter(todo=>todo.id!==action.payload)
             }
         }
         case "CHANGE_STATUS":{
             let newAr=[...state.todos]
             newAr[action.payload].checked=!newAr[action.payload].checked
             return{
-                todos:newAr
+                ...state,todos:newAr
             }
         }
         case "EDIT_TODO":{
@@ -28,7 +29,7 @@ const todoListReducer = (state={todos:[]},action)=>{
             newAr[action.payload.id].title=action.payload.title
             newAr[action.payload.id].time=action.payload.time
             return{
-                todos:newAr
+                ...state,todos:newAr
             } 
         }
         case "CHANGE_PRIORITY_STATUS":{
@@ -36,7 +37,7 @@ const todoListReducer = (state={todos:[]},action)=>{
             console.log(newAr[action.payload].prio)
             newAr[action.payload].priority=!newAr[action.payload].priority
             return{
-                todos:newAr
+                ...state,todos:newAr
             } 
         }
         default: return state
@@ -46,20 +47,28 @@ const todoListReducer = (state={todos:[]},action)=>{
 const userSettingsReducer=(state={},action)=>{
     return state
 }
+const appStateReducer=(state={},action)=>{
+    switch(action.type){
+        case "CHANGE_TAB":
+            return{...state,currentTab:action.payload}
+        default: return state
+    }
+}
 
 const initialState={
     todoList:{
-        todos:[{
-        title:"TEST",
-        time:'12:00',
-        checked:false,
-        priority:false,
-        id:0
-    }]}
+        todos:localStorage.getItem('todos')?JSON.parse(localStorage.getItem('todos')):[],
+    idCounter:localStorage.getItem('idCounter')?localStorage.getItem('idCounter'):0
+},
+    userSettings:{},
+    appState:{
+        currentTab:'1'
+    }
 }
 const reducers=combineReducers({
     todoList:todoListReducer,
-    userSettings:userSettingsReducer
+    userSettings:userSettingsReducer,
+    appState:appStateReducer
 })
 
 const store=createStore(reducers,initialState,composeWithDevTools())

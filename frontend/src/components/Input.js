@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {Container,Box, IconButton,TextField} from '@mui/material'
 import { useDispatch,useSelector } from 'react-redux'
 
@@ -6,8 +6,9 @@ import { useDispatch,useSelector } from 'react-redux'
 const Input = () => {
     const [taskName,setTaskName]=useState()
     const [time,setTime]=useState()
+    const [id,setId]=useState(1)
     const dispatch = useDispatch()
-    const {todos} = useSelector(state => state.todoList)
+    const {todos,idCounter}=useSelector(state=>state.todoList)
     // ======================================================
     // EVENT HANDLERS========================================
     // ======================================================
@@ -17,8 +18,9 @@ const Input = () => {
             time:!time==='--:--'?time:'Today',
             priority:false,
             checked:false,
-            id:todos.length
+            id:idCounter
         }
+        setId(state=>state+1)
         dispatch({
             type:"ADD_TODO",
             payload:newTask
@@ -29,6 +31,10 @@ const Input = () => {
     // ======================================================
     // COMPONENT DEFINITION==================================
     // ======================================================
+    useEffect(() => {
+        localStorage.setItem('idCounter',JSON.stringify(idCounter))
+        localStorage.setItem('todos',JSON.stringify(todos))
+    }, [idCounter])
     return (
         <Box sx={{position:'fixed',bottom:'0',width:'100%',pt:'10px'}}>
           <Container maxWidth='md'   sx={{p:'10px 0',bgcolor:'white',border:'2px solid',borderColor:'primary.main', borderRadius:'0 0'}}>

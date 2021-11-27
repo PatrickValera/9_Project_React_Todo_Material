@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import {Container,Box,TextField} from '@mui/material'
 
 
-const Task = ({task:{title,time,checked,priority},index}) => {
+const Task = ({task:{title,time,checked,priority,id}}) => {
     const [editActive,setEditActive]=useState(false)
     const [newTaskName,setNewTaskName]=useState(title)
     const [newTime,setTime]=useState(time)
@@ -13,20 +13,20 @@ const Task = ({task:{title,time,checked,priority},index}) => {
     const changeStatus=()=>{
         dispatch({
             type:"CHANGE_STATUS",
-            payload:index
+            payload:id
         })
     }
     const changePriority=()=>{
         dispatch({
             type:"CHANGE_PRIORITY_STATUS",
-            payload:index
+            payload:id
         })
     }
     const editTask=()=>{
         dispatch({
             type:"EDIT_TODO",
             payload:{
-                id:index,
+                id:id,
                 title:newTaskName,
                 time:newTime
             }
