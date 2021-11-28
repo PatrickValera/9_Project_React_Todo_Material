@@ -50,6 +50,8 @@ const todoListReducer = (state={},action)=>{
                 } 
             }else return state
         }
+        case "DELETE_ALL":
+            return {todos:[],idCounter:0}
         default: return state
     }
 }
@@ -61,6 +63,8 @@ const appStateReducer=(state={},action)=>{
     switch(action.type){
         case "CHANGE_TAB":
             return{...state,currentTab:action.payload}
+        case "CHANGE_THEME":
+            return{...state,currentTheme:action.payload}
         default: return state
     }
 }
@@ -70,9 +74,12 @@ const initialState={
         todos:localStorage.getItem('todos')?JSON.parse(localStorage.getItem('todos')):[],
     idCounter:Number(localStorage.getItem('idCounter'))?Number(localStorage.getItem('idCounter')):0
 },
-    userSettings:{},
+    userSettings:{
+
+    },
     appState:{
-        currentTab:'1'
+        currentTab:'1',
+        currentTheme:'default'
     }
 }
 const reducers=combineReducers({

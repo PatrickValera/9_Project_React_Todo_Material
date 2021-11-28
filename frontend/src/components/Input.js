@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {Container,Box, IconButton,TextField, Button, Typography} from '@mui/material'
+import {Container,Box, IconButton,TextField, Button, Typography, Zoom} from '@mui/material'
 import { useDispatch,useSelector } from 'react-redux'
 import { height } from '@mui/system'
 
@@ -50,6 +50,7 @@ const Input = () => {
         <Box sx={{minHeight:`${inputActive?'230px':'0'}`}}/>
         <Box sx={{position:'fixed',bottom:'0',width:'100%'}}>
            {inputActive?
+           <Zoom in={inputActive}>
            <Container maxWidth='md'   sx={{p:'20px 10px',bgcolor:'white',border:{md:'2px solid'},borderTop:{xs:'2px solid',md:'2px solid '},borderColor:{xs:'primary.main'}, borderRadius:'0 0'}}>
             <Box display='flex' sx={{alignItems:'center', flexWrap:'wrap'}}>
                 <Box display='flex' sx={{flex:'100% 1 1'}}>
@@ -66,7 +67,6 @@ const Input = () => {
                         size='small'
                         autoComplete='off'
                     />
-            
                     <TextField
                         id="time"
                         label="Deadline"
@@ -97,12 +97,14 @@ const Input = () => {
                 </Box>
             </Box>
           </Container>
+          </Zoom>
             :
             <Container maxWidth='md'>
+                <Zoom in={true}>
                 <Button color='primary' variant='contained' onClick={handleClick} sx={{float:'right',m:'0 20px 20px 0',minHeight:'50px',minWidth:'50px',borderRadius:'25px'}}>
                     <i className="fas fa-plus"></i>
                 </Button>
-                
+                </Zoom>
             </Container>
             }
         </Box>

@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import {Paper, Typography,IconButton, Button} from '@mui/material'
+import {Paper, Typography,IconButton, Button, Zoom} from '@mui/material'
 import { useDispatch } from 'react-redux'
 import {Container,Box,TextField} from '@mui/material'
 
@@ -41,8 +41,8 @@ const Task = ({task:{title,time,checked,priority,id}}) => {
         setEditActive(false)
     }
     return (
+        <Zoom in={true}>
             <Paper elevation={checked?0:4} sx={{display:'flex',p:'20px',mb:'10px',borderRadius:'10px',bgcolor:`${checked&&'transparent'}`}}>
-
             {editActive?
                 <Box display='flex' sx={{flexGrow:1,flexWrap:'wrap'}}>
                     <Box display='flex' sx={{flex:'100% 1 1', mb:'10px'}}>
@@ -53,38 +53,41 @@ const Task = ({task:{title,time,checked,priority,id}}) => {
                         onKeyPress={(e)=>{
                             if(e.key==='Enter')editTodo()
                         }}
+                        autoFocus={editActive}
                         fullWidth 
                         id="outlined-basic" 
                         label="New Task" 
                         variant="outlined" 
                         size='small'
                         sx={{flexGrow:'1',mr:'10px'}}
-                    />
-                    {/* INPUT FOR NEW TASK TIME */}
-                    <TextField
-                        id="time"
-                        label="Deadline"
-                        type="time"
-                        defaultValue={time}
-                        InputLabelProps={{
-                        shrink: true,
-                        }}
-                        inputProps={{
-                        step: 300, // 5 min
-                        }}
-                        sx={{ minWidth: {sx:'5px',md:'140px'} }}
-                        onChange={(e)=>{setTime(e.target.value)}}
-                        size='small'
+                        color='primary'
                     />
                     </Box>
                     <Box display='flex' sx={{flex:'100% 1 1'}}>
-                        <Button variant='contained' color='error' sx={{flexGrow:'1',mr:'10px'}} onClick={deleteTodo} >
-                            <IconButton>
+                        {/* INPUT FOR NEW TASK TIME */}
+                        <TextField
+                            id="time"
+                            label="Time"
+                            type="time"
+                            defaultValue={time}
+                            InputLabelProps={{
+                            shrink: true,
+                            }}
+                            inputProps={{
+                            step: 300, // 5 min
+                            }}
+                            sx={{ minWidth: {sx:'20px',md:'140px'} }}
+                            onChange={(e)=>{setTime(e.target.value)}}
+                            size='small'
+                        />
+                        {/* BUTTON FOR TRASH AND SUBMIT */}
+                        <Button variant='contained' color='error' sx={{flexGrow:'1',m:'0 10px'}} onClick={deleteTodo} >
+                            <IconButton size='small' sx={{p:'0'}}>
                                 <i className="fas fa-trash-alt"></i>
                             </IconButton>
                         </Button>
                         <Button variant='contained' disableRipple color='primary' onClick={editTodo} >
-                            <IconButton>
+                            <IconButton size='small'sx={{p:'0'}}>
                                 <i className="fas fa-pencil-alt"></i>
                             </IconButton>
                         </Button>
@@ -105,7 +108,6 @@ const Task = ({task:{title,time,checked,priority,id}}) => {
                         </IconButton>
                     </Box>
 
-
                     <Box sx={{flexGrow:1,overflow:'hidden',whiteSpace: 'nowrap'}}>
                         <Typography variant='body1' fontWeight='500' color={checked?'grey.500':'grey:900'} sx={{textOverflow:'ellipsis'}}>{title}</Typography>
                         <Typography variant='body2' color={checked?'grey.300':'grey:500'}>{time}</Typography>
@@ -123,10 +125,8 @@ const Task = ({task:{title,time,checked,priority,id}}) => {
                     </Box>
                 </>
             }
-
-
-
             </Paper>
+            </Zoom>
     )
 }
 
