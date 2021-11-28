@@ -18,27 +18,37 @@ const todoListReducer = (state={},action)=>{
             }
         }
         case "CHANGE_STATUS":{
-            let newAr=[...state.todos]
-            newAr[action.payload].checked=!newAr[action.payload].checked
-            return{
+            const existingItem=state.todos.find(todo=>todo.id===action.payload)
+            if(existingItem){
+                const newItem={...existingItem,checked:!existingItem.checked}
+                let newAr=[...state.todos]
+                newAr.splice(state.todos.indexOf(existingItem),1,newItem)
+                return{
                 ...state,todos:newAr
-            }
+                } 
+            }else return state
         }
         case "EDIT_TODO":{
-            let newAr=[...state.todos]
-            newAr[action.payload.id].title=action.payload.title
-            newAr[action.payload.id].time=action.payload.time
-            return{
+            const existingItem=state.todos.find(todo=>todo.id===action.payload.id)
+            if(existingItem){
+                const newItem={...existingItem,title:action.payload.title,time:action.payload.time}
+                let newAr=[...state.todos]
+                newAr.splice(state.todos.indexOf(existingItem),1,newItem)
+                return{
                 ...state,todos:newAr
-            } 
+                } 
+            }else return state
         }
         case "CHANGE_PRIORITY_STATUS":{
-            let newAr=[...state.todos]
-            console.log(newAr[action.payload].prio)
-            newAr[action.payload].priority=!newAr[action.payload].priority
-            return{
+            const existingItem=state.todos.find(todo=>todo.id===action.payload)
+            if(existingItem){
+                const newItem={...existingItem,priority:!existingItem.priority}
+                let newAr=[...state.todos]
+                newAr.splice(state.todos.indexOf(existingItem),1,newItem)
+                return{
                 ...state,todos:newAr
-            } 
+                } 
+            }else return state
         }
         default: return state
     }
@@ -58,7 +68,7 @@ const appStateReducer=(state={},action)=>{
 const initialState={
     todoList:{
         todos:localStorage.getItem('todos')?JSON.parse(localStorage.getItem('todos')):[],
-    idCounter:localStorage.getItem('idCounter')?localStorage.getItem('idCounter'):0
+    idCounter:Number(localStorage.getItem('idCounter'))?Number(localStorage.getItem('idCounter')):0
 },
     userSettings:{},
     appState:{

@@ -1,14 +1,14 @@
 import React,{useState,useEffect} from 'react'
 import Task from './Task'
 import {useSelector} from 'react-redux'
-import {Container} from '@mui/material'
+import {Container,Box} from '@mui/material'
 
 const TasksContainer = () => {
   const {todos}=useSelector(state=>state.todoList)
   const {currentTab}=useSelector(state=>state.appState)
   const [filteredList,setFilteredList]=useState([])
   useEffect(() => {
-    if(todos.length>0){
+    if(todos.length>=0){
       switch(currentTab){
           case '1':setFilteredList([...todos].filter(todo=>todo.checked===false))
             break
@@ -25,10 +25,11 @@ const TasksContainer = () => {
         localStorage.setItem('todos',JSON.stringify(todos))
     }, [todos])
     return (
-        <Container maxWidth='md' sx={{mb:'100px'}} >
+        <Container maxWidth='md'>
           {filteredList.map((task,index)=>(
             <Task key={index} task={{...task}}/>
           ))}
+          {/* <Box sx={{minHeight:'200px'}}/> */}
         </Container>
     )
 }

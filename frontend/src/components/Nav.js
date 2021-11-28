@@ -3,7 +3,7 @@ import {Tab,Tabs,TabPanel, Container} from '@mui/material'
 import { useDispatch } from 'react-redux'
 const Nav = () => {
   const dispatch=useDispatch()
-  const [value,setValue]=useState(0)
+  const [value,setValue]=useState('1')
   const handleChange=(e,newValue)=>{
     dispatch({
       type:'CHANGE_TAB',

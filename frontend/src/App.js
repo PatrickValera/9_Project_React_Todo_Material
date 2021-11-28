@@ -1,5 +1,5 @@
 import './App.css';
-import {useState} from 'react'
+import { Box } from '@mui/system';
 import { ThemeProvider } from '@mui/material/styles';
 import { mainTheme } from './theme';
 import Header from './components/Header';
@@ -15,17 +15,9 @@ function App() {
   return (
     <ThemeProvider theme={mainTheme}>
         <Header/>
-
         <Nav/>
-
         <TasksContainer/>
-
-        
         <Input/>
-
-
-
-
     </ThemeProvider>
   );
 }

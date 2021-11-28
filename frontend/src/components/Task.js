@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import {Paper, Typography,IconButton} from '@mui/material'
+import {Paper, Typography,IconButton, Button} from '@mui/material'
 import { useDispatch } from 'react-redux'
 import {Container,Box,TextField} from '@mui/material'
 
@@ -22,7 +22,7 @@ const Task = ({task:{title,time,checked,priority,id}}) => {
             payload:id
         })
     }
-    const editTask=()=>{
+    const editTodo=()=>{
         dispatch({
             type:"EDIT_TODO",
             payload:{
@@ -33,23 +33,32 @@ const Task = ({task:{title,time,checked,priority,id}}) => {
         })
         setEditActive(state=>!state)
     }
+    const deleteTodo=()=>{
+        dispatch({
+            type:"DELETE_TODO",
+            payload:id
+        })
+        setEditActive(false)
+    }
     return (
-            <Paper elevation={checked?0:4} sx={{display:'flex',p:'20px',mb:'10px',bgcolor:`${checked&&'transparent'}`}}>
+            <Paper elevation={checked?0:4} sx={{display:'flex',p:'20px',mb:'10px',borderRadius:'10px',bgcolor:`${checked&&'transparent'}`}}>
 
             {editActive?
-                <Box display='flex' sx={{flexGrow:1}}>
+                <Box display='flex' sx={{flexGrow:1,flexWrap:'wrap'}}>
+                    <Box display='flex' sx={{flex:'100% 1 1', mb:'10px'}}>
                     {/* INPUT FOR NEW TASK NAME */}
                     <TextField 
                         value={newTaskName} 
                         onChange={(e)=>{setNewTaskName(e.target.value)}} 
                         onKeyPress={(e)=>{
-                            if(e.key==='Enter')editTask()
+                            if(e.key==='Enter')editTodo()
                         }}
                         fullWidth 
                         id="outlined-basic" 
                         label="New Task" 
-                        variant="filled" 
+                        variant="outlined" 
                         size='small'
+                        sx={{flexGrow:'1',mr:'10px'}}
                     />
                     {/* INPUT FOR NEW TASK TIME */}
                     <TextField
@@ -67,13 +76,19 @@ const Task = ({task:{title,time,checked,priority,id}}) => {
                         onChange={(e)=>{setTime(e.target.value)}}
                         size='small'
                     />
-                    <IconButton 
-                        onClick={editTask} 
-                        disableRipple 
-                        color='primary'
-                    >
-                        <i className="fas fa-pencil-alt"></i>
-                    </IconButton>
+                    </Box>
+                    <Box display='flex' sx={{flex:'100% 1 1'}}>
+                        <Button variant='contained' color='error' sx={{flexGrow:'1',mr:'10px'}} onClick={deleteTodo} >
+                            <IconButton>
+                                <i className="fas fa-trash-alt"></i>
+                            </IconButton>
+                        </Button>
+                        <Button variant='contained' disableRipple color='primary' onClick={editTodo} >
+                            <IconButton>
+                                <i className="fas fa-pencil-alt"></i>
+                            </IconButton>
+                        </Button>
+                    </Box>
                 </Box>
                 :
                 <>
@@ -95,6 +110,7 @@ const Task = ({task:{title,time,checked,priority,id}}) => {
                         <Typography variant='body1' fontWeight='500' color={checked?'grey.500':'grey:900'} sx={{textOverflow:'ellipsis'}}>{title}</Typography>
                         <Typography variant='body2' color={checked?'grey.300':'grey:500'}>{time}</Typography>
                     </Box>
+                    
                     <Box sx={{minWidth:'30px'}}>
                         <IconButton onClick={changePriority}>
                             {priority?<i style={{color:'rgb(254,216,52)'}} className="fas fa-star"/>:<i style={{color:'rgb(254,216,52)'}} className="far fa-star"/>}
